@@ -1,0 +1,183 @@
+{% extends "./index.html"%}
+{% load static %}
+{% block title %}
+{{book.titre}}
+{% endblock %}
+{% block conetent %}
+
+<section class="bg-sand padding-medium">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-5">
+                <a href="#" class="product-image"><img src="{{book.image.url}}" width="400" height="400"></a>
+            </div>
+
+            <div class="col-md-7 pl-5">
+                <div class="product-detail">
+                    {% if borrowed == 'true' %}
+                    <span style="color:green;">You have successfully borrowed the book "{{ book.titre }}". Please return it by [due date].</span>
+                
+                {% endif %}
+                <br>
+                    <span>{{book.auteur}}</span>
+                    <h1>{{book.titre}}</h1>
+                    <div class="rating-container d-flex align-items-center text-warning mb-4">
+                        <svg width="32" height="32">
+                          <use xlink:href="#star-solid"></use>
+                        </svg>
+                        <svg width="32" height="32">
+                          <use xlink:href="#star-solid"></use>
+                        </svg>
+                        <svg width="32" height="32">
+                          <use xlink:href="#star-solid"></use>
+                        </svg>
+                        <svg width="32" height="32">
+                          <use xlink:href="#star-outline"></use>
+                        </svg>
+                        <svg width="32" height="32">
+                          <use xlink:href="#star-outline"></use>
+                        </svg>
+                    </div>
+                    
+                    <p>
+                        {{book.description}}
+                    </p>
+                   
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirme"
+                     {% if borrowed == 'true' %}
+                     disabled style="cursor:not-allowed;"
+                        {% elif not disponible %}
+                        disabled style="cursor:not-allowed;"
+                        
+                        {% endif %}
+                        >
+                            Borrow
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="confirme" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                you want to borrow the book : {{book.titre}}
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="height:40px">Close</button>
+                                <a href="{% url 'borrow' id_book=book.id_livre %}"><button type="button" class="btn btn-primary" style="height:40px">Confirm</button></a>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    
+
+                   
+
+                    <div class="d-flex gap-3">
+                        
+                        
+                        
+                       
+                    </div>
+                    {% if borrowed == 'true' %}
+                    <p  style="color: #8B0000;">you have already borrowed this book !</p>
+                
+                    {% elif not disponible %}
+                    <p  style="color: #8B0000;">This book is not available now !</p>
+                {% endif %}
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="product-tabs mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="tabs-listing">
+                <nav>
+                    <div class="nav nav-tabs d-flex justify-content-center" id="nav-tab" role="tablist">
+                        <button class="nav-link active text-uppercase px-5 py-3" id="nav-home-tab"
+                            data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab"
+                            aria-controls="nav-home" aria-selected="true">Description</button>
+                        <button class="nav-link text-uppercase px-5 py-3" id="nav-information-tab"
+                            data-bs-toggle="tab" data-bs-target="#nav-information" type="button" role="tab"
+                            aria-controls="nav-information" aria-selected="false">Additional information</button>
+                        
+                    </div>
+                </nav>
+                <div class="tab-content py-5" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                        aria-labelledby="nav-home-tab">
+                        <h5>Book Description</h5>
+                        <p>{{book.description}} </p>
+                    </div>
+                    <div class="tab-pane fade" id="nav-information" role="tabpanel"
+                        aria-labelledby="nav-information-tab">
+                        <h5>It is Comfortable and Best</h5>
+                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                            nulla
+                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                            deserunt mollit
+                            anim id est laborum. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu
+                            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                            officia
+                            deserunt mollit anim id est laborum.</p>
+                    </div>
+                    
+            
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="related-products" class="bookshelf pb-5 mb-5">
+    <div class="container">
+        <div class="section-header align-center">
+            <div class="title">
+                <span>Related Books</span>
+            </div>
+            <h2 class="section-title">You may also like</h2>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% for book_s in books_fav %}
+          
+                            
+                           
+            <div class="col-md-3">
+                <div class="product-item">
+                    <a href="{% url 'single_book' id_book=book_s.id_livre   borrowed=book_s.titre %}">
+                    <figure class="product-style">
+                        <img src="{{book_s.image.url}}" alt="Books" class="product-item" style="width: 300px; height: 385px;">
+                        <button type="button" class="add-to-cart" data-product-tile="add-to-cart">order</button>
+                    </figure>
+                </a>
+                    <figcaption>
+                        <h3>{{book_s.titre}}</h3>
+                      
+                        <span>{{book_s.auteur}}</span>
+                        
+                       
+                    </figcaption>
+                </div>
+            </div>
+            
+            
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

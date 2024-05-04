@@ -1,0 +1,83 @@
+{% load static %}
+<div id="header-wrap">
+
+    <div class="top-content">
+        <div class="container-fluid">
+            <div class="row">
+                
+                <div class="col-md-12">
+                    <div class="right-element">
+                        <a href="{% url 'logout'  %}" class="user-account for-buy">
+                            <i class="fas fa-sign-out-alt" style="color: red;"></i><span style="color:red;"> Log Out</span></a>
+                        
+
+                        <div class="action-menu">
+
+                            <div class="search-bar">
+                                <a href="#" class="search-button search-toggle" data-selector="#header-wrap">
+                                    <i class="icon icon-search"></i>
+                                </a>
+                                <form role="search" method="get" class="search-box">
+                                    <input class="search-field text search-input" placeholder="Search"
+                                        type="search">
+                                </form>
+                            </div>
+                        </div>
+
+                    </div><!--top-right-->
+                </div>
+
+            </div>
+        </div>
+    </div><!--top-content-->
+
+    <header id="header">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <div class="main-logo">
+                        <a href="{% url 'home' %}"><img src="{% static 'image/main-logo.png' %}"  alt="logo"></a>
+                    </div>
+
+                </div>
+
+                <div class="col-md-10">
+
+                    <nav id="navbar">
+                        <div class="main-menu stellarnav">
+                            <ul class="menu-list">
+                                <li class="menu-item active"><a href="{% url 'home' %}">Home</a></li>
+                               
+                                {% if request.path == '/'  %}
+                                <li class="menu-item"><a href="#all_books" class="nav-link">Books</a></li>
+                                <li class="menu-item"><a href="#popular-books" class="nav-link">popular books</a></li>
+                                <li class="menu-item"><a href="#latest-blog" class="nav-link">Articles</a></li>
+                                
+                                
+                                {% else %}
+                                <li class="menu-item"><a href="{% url 'home' %}#all_books" class="nav-link">Books</a></li>
+                                <li class="menu-item"><a href="{% url 'home' %}#popular-books" class="nav-link">popular books</a></li>
+                                <li class="menu-item"><a href="#latest-blog" class="nav-link">Articles</a></li>
+
+                                {% endif %}
+                                
+                                
+                            </ul>
+
+                            <div class="hamburger">
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+
+                        </div>
+                    </nav>
+
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+</div><!--header-wrap-->
