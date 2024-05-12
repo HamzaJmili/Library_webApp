@@ -6,6 +6,7 @@ urlpatterns = [
     path("book/<int:id_book>/<str:borrowed>",views.book,name="single_book"),
     path("login",views.login,name="login"),
     path("borrow/<int:id_book>",views.borrow_book,name="borrow"),
-    path("logout",views.logout,name="logout")
+    path("logout",views.logout,name="logout"),
+    path("profile",views.profile,name="profile")
 
 ]

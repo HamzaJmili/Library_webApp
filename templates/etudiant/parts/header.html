@@ -17,9 +17,10 @@
                                 <a href="#" class="search-button search-toggle" data-selector="#header-wrap">
                                     <i class="icon icon-search"></i>
                                 </a>
-                                <form role="search" method="get" class="search-box">
-                                    <input class="search-field text search-input" placeholder="Search"
+                                <form role="search" method="get" class="search-box" action="{% url 'home' %}">
+                                    <input class="search-field text search-input" placeholder="Search" name="Search"
                                         type="search">
+                                    
                                 </form>
                             </div>
                         </div>

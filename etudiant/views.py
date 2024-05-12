@@ -9,15 +9,41 @@ from django.utils import timezone
 
 from django.contrib.auth import login as auth_login 
 # Create your views here.
-def home (request):
+def home (request): 
     if 'etudiant_cne' in request.session :
-        all_books = Livre.objects.all()
+        all_books=[]
+        is_search = False
+        if 'Search' in request.GET :
+            is_search=True
+
+            query = request.GET.get('Search')
+            all_books.extend(Livre.objects.filter(titre__icontains=query)) 
+            
+            try:
+            
+                tag_search = Tag.objects.get(nom_tag=query)
+                all_books.extend(Livre.objects.filter(tags=tag_search))
+            except Tag.DoesNotExist or Livre.DoesNotExist:
+            
+                pass
+
+            print(query)
+            
+            
+        else:
+            print("no search")
+            all_books = Livre.objects.all()
         populaire=Livre.objects.all().order_by('-nb_vues')[:4]
         print(request.session['etudiant_cne'])
         all_tags = Tag.objects.all()
-        return render(request, 'etudiant/home.html',{'books':all_books,'tags':all_tags,'populaire':populaire})
+        if 'Search' in request.GET :
+            return render(request, 'etudiant/home.html',{'books':all_books,'tags':all_tags,'populaire':populaire,'is_search':is_search ,'search':query})
+        else:
+
+            return render(request, 'etudiant/home.html',{'books':all_books,'tags':all_tags,'populaire':populaire,'is_search':is_search})
     else :
         return redirect('login')
+
 
 def book(request,id_book,borrowed):
     
@@ -40,6 +66,7 @@ def book(request,id_book,borrowed):
             if(len(books_fav)>5):
                 break
         print(books_fav)
+        
         
 
        
@@ -102,5 +129,8 @@ def logout (request):
     del request.session['etudiant_cne']
     del request.session['etudiant_email']
     return redirect('login')
+
+def profile(request):
+    return render(request,'etudiant/profile.html')
 
 

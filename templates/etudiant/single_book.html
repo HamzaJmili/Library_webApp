@@ -10,7 +10,7 @@
         <div class="row">
 
             <div class="col-md-5">
-                <a href="#" class="product-image"><img src="{{book.image.url}}" width="400" height="400"></a>
+                <a href="#" class="product-image"><img src="{{book.image.url}}" width="400" height="400" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5)"></a>
             </div>
 
             <div class="col-md-7 pl-5">
@@ -45,7 +45,7 @@
                     </p>
                    
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirme"
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirme" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5)"
                      {% if borrowed == 'true' %}
                      disabled style="cursor:not-allowed;"
                         {% elif not disponible %}
@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="height:40px">Close</button>
-                                <a href="{% url 'borrow' id_book=book.id_livre %}"><button type="button" class="btn btn-primary" style="height:40px">Confirm</button></a>
+                                <a href="{% url 'borrow' id_book=book.id_livre %}"><button type="button" class="btn btn-primary" style="height:40px;">Confirm</button></a>
                                 </div>
                             </div>
                             </div>
@@ -160,7 +160,7 @@
             <div class="col-md-3">
                 <div class="product-item">
                     <a href="{% url 'single_book' id_book=book_s.id_livre   borrowed=book_s.titre %}">
-                    <figure class="product-style">
+                    <figure class="product-style" >
                         <img src="{{book_s.image.url}}" alt="Books" class="product-item" style="width: 300px; height: 385px;">
                         <button type="button" class="add-to-cart" data-product-tile="add-to-cart">order</button>
                     </figure>
