@@ -51,7 +51,7 @@ class Exemplaire(models.Model):
         managed = True
         db_table = 'Exemplaire'
     def __str__(self):
-        return ("id: "+str(self.id_exmp)+" --- book: "+self.livre.titre)
+        return ("id: "+str(self.id_exmp)+" --- book: "+self.livre.titre[:30])
     
 @receiver(post_save, sender=Livre)
 def create_exemplaires(sender, instance, created, **kwargs):
@@ -86,6 +86,7 @@ class Emprunt(models.Model):
     date_retour = models.DateField(null=True, blank=True)
     etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE)
     exemplaire = models.ForeignKey(Exemplaire, on_delete=models.CASCADE)
+    confirmer_retour =models.BooleanField(default=False)
     class Meta:
         managed = True
         db_table = 'Emprunt'

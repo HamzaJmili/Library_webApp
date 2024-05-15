@@ -6,6 +6,8 @@ from .models import Etudiant
 from .models import Exemplaire
 from .models import Emprunt
 from django.utils import timezone
+from django.shortcuts import get_object_or_404, redirect
+
 
 from django.contrib.auth import login as auth_login 
 # Create your views here.
@@ -132,5 +134,18 @@ def logout (request):
 
 def profile(request):
     return render(request,'etudiant/profile.html')
+
+def confirm_return_emprunt(request, pk):
+    emprunt = get_object_or_404(Emprunt, pk=pk)
+    emprunt.confirmer_retour = True
+    emprunt.save()
+    return redirect('admin:etudiant_emprunt_changelist')
+    
+def confirm(request, pk):
+    emprunt = get_object_or_404(Emprunt, pk=pk)
+    emprunt.confirmer = True
+    print('id_date_retour : '+str(request.POST.get('id_date_retour')))
+    emprunt.save()
+    return redirect('admin:etudiant_emprunt_changelist')
 
 
