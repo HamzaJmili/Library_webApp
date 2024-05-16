@@ -138,13 +138,20 @@ def profile(request):
 def confirm_return_emprunt(request, pk):
     emprunt = get_object_or_404(Emprunt, pk=pk)
     emprunt.confirmer_retour = True
+    exemp = Exemplaire.objects.get(id_exmp=emprunt.exemplaire.id_exmp)
+    exemp.etat='Disponible'
+    exemp.save()
+    livre=Livre.objects.get(id_livre=exemp.livre.id_livre)
+    livre.nb_exemplaires=livre.nb_exemplaires+1
+    livre.save()
+    
     emprunt.save()
     return redirect('admin:etudiant_emprunt_changelist')
     
 def confirm(request, pk):
     emprunt = get_object_or_404(Emprunt, pk=pk)
     emprunt.confirmer = True
-    print('id_date_retour : '+str(request.POST.get('id_date_retour')))
+    print(request.POST)
     emprunt.save()
     return redirect('admin:etudiant_emprunt_changelist')
 

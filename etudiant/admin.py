@@ -22,13 +22,15 @@ class livreAdmine(admin.ModelAdmin):
 class ExemplaireAdmin(admin.ModelAdmin):
     list_display=['id_exmp','livre','etat'] 
     list_editable=['etat']
+    search_fields=['livre__titre']
 
 class EmpruntAdmin(admin.ModelAdmin):
    
     list_display = [ 'exemplaire','etudiant','date_emprunt', 'confirmer_button', 'date_retour',   'confirm_return_button']
     list_editable=['date_retour']
+    search_fields = ['etudiant__cne']  
     
-    
+   
 
    
 
@@ -43,8 +45,9 @@ class EmpruntAdmin(admin.ModelAdmin):
         if obj.confirmer :
             return format_html('<a class="button" disabled >confirmed</a>')
         else :
-            return format_html('<a class="button" href="{}">Confirm</a>', reverse('confirm', args=[obj.pk]))
+            return format_html('<a class="button" href="{}" >Confirm</a>', reverse('confirm', args=[obj.pk]))
     confirm_return_button.short_description = "Confirm Return"
+    
 
 
     
