@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'Library_WebApp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'orcl',
+        'NAME': 'XE',
         'USER': 'djangousr',
         'PASSWORD': 'pswd',
         'HOST': 'localhost',

@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -89,7 +90,13 @@ class Emprunt(models.Model):
     date_retour = models.DateField(null=True, blank=True)
     etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE)
     exemplaire = models.ForeignKey(Exemplaire, on_delete=models.CASCADE)
-    confirmer_retour =models.BooleanField(default=False)
+    confirmer_retour = models.BooleanField(default=False)
+
+    def is_overdue(self):
+        if not self.confirmer_retour and self.date_retour:
+            return self.date_retour < timezone.now().date()
+        return False
+    
     class Meta:
         managed = True
         db_table = 'Emprunt'

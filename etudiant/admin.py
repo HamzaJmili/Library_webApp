@@ -22,32 +22,24 @@ class livreAdmine(admin.ModelAdmin):
 class ExemplaireAdmin(admin.ModelAdmin):
     list_display=['id_exmp','livre','etat'] 
     list_editable=['etat']
-    search_fields=['livre__titre']
 
 class EmpruntAdmin(admin.ModelAdmin):
-   
-    list_display = [ 'exemplaire','etudiant','date_emprunt', 'confirmer_button', 'date_retour',   'confirm_return_button']
-    list_editable=['date_retour']
-    search_fields = ['etudiant__cne']  
-    
-   
-
-   
+    list_display = ['exemplaire', 'etudiant', 'date_emprunt', 'confirmer_button', 'date_retour', 'confirm_return_button']
+    list_editable = ['date_retour']
 
     def confirm_return_button(self, obj):
-        if obj.confirmer_retour :
-            return format_html('<a class="button" disabled >returned</a>')
-        elif obj.confirmer :
+        if obj.confirmer_retour:
+            return format_html('<a class="button" disabled>Returned</a>')
+        elif obj.confirmer:
             return format_html('<a class="button" href="{}">Confirm Return</a>', reverse('confirm_return_emprunt', args=[obj.pk]))
     confirm_return_button.short_description = "Confirm Return"
 
     def confirmer_button(self, obj):
-        if obj.confirmer :
-            return format_html('<a class="button" disabled >confirmed</a>')
-        else :
-            return format_html('<a class="button" href="{}" >Confirm</a>', reverse('confirm', args=[obj.pk]))
-    confirm_return_button.short_description = "Confirm Return"
-    
+        if obj.confirmer:
+            return format_html('<a class="button" disabled>Confirmed</a>')
+        else:
+            return format_html('<a class="button" href="{}">Confirm</a>', reverse('confirm', args=[obj.pk]))
+    confirmer_button.short_description = "Confirm"
 
 
     
@@ -62,4 +54,3 @@ admin.site.register(Emprunt,EmpruntAdmin)
 
 admin.site.site_header="Library administration"
 admin.site.site_title="Library"
-
