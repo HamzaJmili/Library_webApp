@@ -1,6 +1,9 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
+
+from django.urls import path
 class Tag(models.Model):
     id_tag = models.AutoField(primary_key=True)
     nom_tag = models.CharField(max_length=50)
@@ -90,6 +93,8 @@ class Emprunt(models.Model):
     class Meta:
         managed = True
         db_table = 'Emprunt'
+    
+
     
     
 
