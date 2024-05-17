@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from .models import Livre
@@ -133,19 +134,46 @@ def logout (request):
     return redirect('login')
 
 def profile(request):
-    return render(request,'etudiant/profile.html')
+    if 'etudiant_cne' in request.session:
+        etudiant = Etudiant.objects.get(cne=request.session['etudiant_cne'])
+        emprunts = Emprunt.objects.filter(etudiant=etudiant).select_related('exemplaire__livre')
+
+        today = timezone.now().date()
+
+        has_overdue_books = any(emprunt.is_overdue() for emprunt in emprunts)
+
+        return render(request, 'etudiant/profile.html', {'etudiant': etudiant, 'emprunts': emprunts, 'today': today, 'has_overdue_books': has_overdue_books})
+    else:
+        return redirect('login')
+
+
+
 
 def confirm_return_emprunt(request, pk):
     emprunt = get_object_or_404(Emprunt, pk=pk)
     emprunt.confirmer_retour = True
+
+    # Mettre à jour la date de retour et le statut de l'exemplaire
+    emprunt.date_retour = timezone.now().date()
+    emprunt.exemplaire.etat = 'Disponible'
+    emprunt.exemplaire.save()
     emprunt.save()
     return redirect('admin:etudiant_emprunt_changelist')
-    
+
 def confirm(request, pk):
     emprunt = get_object_or_404(Emprunt, pk=pk)
     emprunt.confirmer = True
-    print('id_date_retour : '+str(request.POST.get('id_date_retour')))
+
+    # Récupérer la date de retour depuis le formulaire
+    date_retour = request.POST.get('date_retour')
+    if date_retour:
+        emprunt.date_retour = date_retour
+    else:
+        # Définir une date de retour par défaut si aucune n'est fournie
+        emprunt.date_retour = timezone.now().date() + datetime.timedelta(days=14)  # Par exemple, 14 jours après la date de confirmation
+
     emprunt.save()
     return redirect('admin:etudiant_emprunt_changelist')
+
 
 

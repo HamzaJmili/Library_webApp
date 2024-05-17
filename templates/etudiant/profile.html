@@ -1,56 +1,61 @@
 {% extends "./index.html"%}
 {% load static %}
 {% block title %}
-
 profile
-
 {% endblock %}
 {% block conetent %}
+
 <section class="padding-medium">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h3>Unordered List</h3>
+                <h1>Profil </h1>
                 <ul>
-                    <li>CNE :</li>
-                    <li>Name :</li>
-                    <li>Vestibulum auctor dapibus neque.</li>
-                    <li>Aliquam tincidunt mauris eu risus.</li>
-                    <li>Vestibulum auctor dapibus neque.</li>
+                    <li><strong>CNE:</strong> {{ request.session.etudiant_cne }}</li>
+                    <li><strong>Name:</strong> {{ request.session.etudiant_name }}</li>
+                    <li><strong>Email:</strong> {{ request.session.etudiant_email }}</li>
                 </ul>
-
             </div>
-<div class="row">
-    <div class="col-md-12">
-
-        <hr>
-
-        <h3>Table</h3>
-        <table class="u-full-width">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Sex</th>
-                    <th>Location</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Dave Gamache</td>
-                    <td>26</td>
-                    <td>Male</td>
-                    <td>San Francisco</td>
-                </tr>
-                <tr>
-                    <td>Dwayne Johnson</td>
-                    <td>42</td>
-                    <td>Male</td>
-                    <td>Hayward</td>
-                </tr>
-            </tbody>
-        </table>
+        </div>
+        {% if has_overdue_books %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Attention !</strong> You have books that you have not returned by the requested date. Please return them to the library as soon as possible.
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Borrowed Books </h2>
+                <table class="u-full-width">
+                    <thead>
+                        <tr>
+                            <th>Book Name</th>
+                            <th>Borrow Date</th>
+                            <th>Return Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emprunt in emprunts %}
+                        <tr {% if emprunt.is_overdue %}style="color: red;"{% elif emprunt.confirmer_retour %}style="color: darkgreen;"{% endif %}>
+                            <td>{{ emprunt.exemplaire.livre.titre }}</td>
+                            <td>{{ emprunt.date_emprunt }}</td>
+                            <td>{{ emprunt.date_retour }}</td>
+                            <td>
+                                {% if emprunt.is_overdue %}
+                                    Late
+                                {% elif emprunt.confirmer_retour %}
+                                    <span style="color: rgb(1, 110, 1);">Returned</span>
+                                {% else %}
+                                    Borrowed
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    
+                </table>
+            </div>
+        </div>
     </div>
-</div>
 </section>
 {% endblock %}
