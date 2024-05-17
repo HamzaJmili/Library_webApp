@@ -15,22 +15,26 @@ home
 
 
 <section id="all_books">
+    
+    {% if is_search %}
     <br>
     <div class="section-header align-center">
+        
         <div class="title">
-            {% if not is_search %}
-            <span>All books</span>
             
-            {% else %}
+            
+            
             <span>{{search}}</span>
             <br>
             <br>
             
-            {% endif %}
+            
 
         </div>
         
+        
     </div>
+    {% endif %}
     <div class="container">
         <div class="row">
             {% if not is_search %}
@@ -59,7 +63,7 @@ home
                             <div class="col-md-3">
                                 <div class="product-item">
                                     <a href="{% url 'single_book' id_book=book.id_livre   borrowed=book.titre %}">
-                                    <figure class="product-style">
+                                    <figure class="product-style" style="border-radius:20px">
                                         <img src="{{book.image.url}}" alt="Books" class="product-item" style="width: 300px; height: 385px;">
                                         <button type="button" class="add-to-cart" data-product-tile="add-to-cart">order</button>
                                     </figure>

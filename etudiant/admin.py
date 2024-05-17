@@ -54,4 +54,3 @@ admin.site.register(Emprunt,EmpruntAdmin)
 
 admin.site.site_header="Library administration"
 admin.site.site_title="Library"
-

@@ -175,5 +175,3 @@ def confirm(request, pk):
     emprunt.save()
     return redirect('admin:etudiant_emprunt_changelist')
 
-
-

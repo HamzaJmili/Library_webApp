@@ -3,11 +3,7 @@
 */
 .fs-1 {font-size: 1px;}
 .fs-2 {font-size: 2px;}
-.center-btn {
-    display: block;
-    margin: 0 auto; /* This centers the button horizontally */
-    text-align: center; /* This centers the button text */
-}
+
 
 .fs-3 {font-size: 3px;}
 .fs-4 {font-size: 4px;}
