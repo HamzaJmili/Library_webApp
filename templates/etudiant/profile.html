@@ -5,6 +5,17 @@ profile
 {% endblock %}
 {% block conetent %}
 
+<style>
+    .btn-danger {
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+        border-radius: 10px;
+        height: 50px;
+    }
+
+    
+</style>
 <section class="padding-medium">
     <div class="container">
         <div class="row">
@@ -32,6 +43,8 @@ profile
                             <th>Borrow Date</th>
                             <th>Return Date</th>
                             <th>Status</th>
+                            <th></th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +60,14 @@ profile
                                     <span style="color: rgb(1, 110, 1);">Returned</span>
                                 {% else %}
                                     Borrowed
+                                {% endif %}
+                            </td>
+                            <td width="8px">
+                                {% if not emprunt.confirmer %}
+                                <form method="post" action="{% url 'annuler_emprunt' emprunt.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-danger">Annuler</button>
+                                </form>
                                 {% endif %}
                             </td>
                         </tr>

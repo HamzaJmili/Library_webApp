@@ -1,4 +1,5 @@
 import datetime
+from django.http import Http404
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from .models import Livre
@@ -168,10 +169,25 @@ def confirm(request, pk):
     date_retour = request.POST.get('date_retour')
     if date_retour:
         emprunt.date_retour = date_retour
-    else:
-        # Définir une date de retour par défaut si aucune n'est fournie
-        emprunt.date_retour = timezone.now().date() + datetime.timedelta(days=14)  # Par exemple, 14 jours après la date de confirmation
+    #else:
+        #Définir une date de retour par défaut si aucune n'est fournie
+        #emprunt.date_retour = timezone.now().date() + datetime.timedelta(days=14)  # Par exemple, 14 jours après la date de confirmation
 
     emprunt.save()
     return redirect('admin:etudiant_emprunt_changelist')
+
+def annuler_emprunt(request, emprunt_id):
+    try:
+        emprunt = Emprunt.objects.get(id=emprunt_id, etudiant__cne=request.session['etudiant_cne'], confirmer=False)
+    except Emprunt.DoesNotExist:
+        raise Http404("No Emprunt matches the given query.")
+    
+    emprunt.exemplaire.etat = 'Disponible'
+    emprunt.exemplaire.save()
+    emprunt.delete()
+
+    emprunt.exemplaire.livre.nb_exemplaires += 1
+    emprunt.exemplaire.livre.save()
+
+    return redirect('profile')
 
