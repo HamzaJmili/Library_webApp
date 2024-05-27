@@ -70,7 +70,7 @@ def book(request,id_book,borrowed):
             if(len(books_fav)>5):
                 break
         print(books_fav)
-        etudiant=Emprunt.objects.get(cne=request.session['etudiant_cne'])
+        etudiant=Etudiant.objects.get(cne=request.session['etudiant_cne'])
         emprunts_etudiant = Emprunt.objects.filter(etudiant=etudiant)
         for emprunt_etudiant in emprunts_etudiant :
             if(emprunt_etudiant.confirmer_retour==False):
