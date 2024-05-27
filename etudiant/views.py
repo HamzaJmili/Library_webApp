@@ -69,6 +69,12 @@ def book(request,id_book,borrowed):
             if(len(books_fav)>5):
                 break
         print(books_fav)
+        etudiant=Emprunt.objects.get(cne=request.session['etudiant_cne'])
+        emprunts_etudiant = Emprunt.objects.filter(etudiant=etudiant)
+        for emprunt_etudiant in emprunts_etudiant :
+            if(emprunt_etudiant.confirmer_retour==False):
+                   disponible=False
+    
         
         
 
@@ -117,6 +123,7 @@ def login(request):
                
                 request.session['etudiant_cne'] = etudiant.cne
                 request.session['etudiant_email'] = etudiant.email
+                request.session['etudiant_name'] = f"{etudiant.nom} {etudiant.prenom}"
                 
                 return redirect('home') 
             else:
@@ -166,6 +173,7 @@ def confirm(request, pk):
 
     # Récupérer la date de retour depuis le formulaire
     date_retour = request.POST.get('date_retour')
+    print(request.POST.get('date_retour'))
     if date_retour:
         emprunt.date_retour = date_retour
     else:

@@ -22,10 +22,11 @@ class livreAdmine(admin.ModelAdmin):
 class ExemplaireAdmin(admin.ModelAdmin):
     list_display=['id_exmp','livre','etat'] 
     list_editable=['etat']
-
+   
 class EmpruntAdmin(admin.ModelAdmin):
     list_display = ['exemplaire', 'etudiant', 'date_emprunt', 'confirmer_button', 'date_retour', 'confirm_return_button']
     list_editable = ['date_retour']
+    search_fields = ['etudiant__cne','exemplaire__livre__titre','exemplaire__id_exmp']
 
     def confirm_return_button(self, obj):
         if obj.confirmer_retour:
